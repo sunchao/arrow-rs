@@ -23,3 +23,4 @@ pub mod arity;
 pub mod bitwise;
 pub mod boolean;
 pub mod temporal;
+mod selection;

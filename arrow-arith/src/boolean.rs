@@ -32,6 +32,7 @@ use arrow_buffer::{Buffer, MutableBuffer};
 use arrow_data::bit_mask::combine_option_bitmap;
 use arrow_data::ArrayData;
 use arrow_schema::{ArrowError, DataType};
+use crate::selection::SelectionVector;
 
 /// Updates null buffer based on data buffer and null buffer of the operand at other side
 /// in boolean AND kernel with Kleene logic. In short, because for AND kernel, null AND false
@@ -409,6 +410,22 @@ pub fn is_null(input: &dyn Array) -> Result<BooleanArray, ArrowError> {
     };
 
     Ok(BooleanArray::from(data))
+}
+
+pub fn is_null_new(input: &dyn Array, sv: &mut SelectionVector) -> Result<(), ArrowError> {
+    match input.data_ref().null_bitmap() {
+        None => {
+            sv.all_not_selected = true;
+            Ok(())
+        }
+        Some(buffer) => {
+            for idx in sv.iter() {
+
+            }
+
+        }
+    }
+
 }
 
 /// Returns a non-null [BooleanArray] with whether each value of the array is not null.
